@@ -8,7 +8,7 @@ define pam::limits (
 ) {
   include pam
 
-  if ! ($osfamily in ['Debian']) {
+  if ! ($osfamily in ['Debian', 'Suse']) {
     fail("pam::limits does not support osfamily $osfamily")
   }
 
