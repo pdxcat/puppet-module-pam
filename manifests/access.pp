@@ -15,7 +15,15 @@ define pam::access (
     fail("Permission must be + or - ; recieved $permission")
   }
 
-  realize Concat['/etc/security/access.conf']
+  $access_conf = "/etc/security/access.conf"
+
+  realize Concat[$accessr_.conf]
+
+  concat::fragment { "access_header":
+    target  => $access_conf,
+    order   => 01,
+    content => template("pam/header.erb"),
+  }
 
   concat::fragment { "pam::access $entity":
     ensure  => $ensure,
