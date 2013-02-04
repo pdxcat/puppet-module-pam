@@ -7,7 +7,7 @@ define pam::access (
 ) {
   include pam
 
-  if ! ($osfamily in ['Debian']) {
+  if ! ($osfamily in ['Debian', 'Suse']) {
     fail("pam::access does not support osfamily $osfamily")
   }
 
