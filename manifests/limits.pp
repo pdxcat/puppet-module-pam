@@ -8,19 +8,14 @@ define pam::limits (
 ) {
   include pam
 
-  if ! ($osfamily in ['Debian', 'RedHat', 'Suse']) {
-    fail("pam::limits does not support osfamily $osfamily")
+  if ! ($::osfamily in ['Debian', 'RedHat', 'Suse']) {
+    fail("pam::limits does not support osfamily $::osfamily")
   }
 
-  $limits_conf = "/etc/security/limits.conf"
+  $limits_conf = $pam::limits_conf
 
-  realize Concat[$limits_conf]
-
-  concat::fragment { "limits_header":
-    target  => $limits_conf,
-    order   => 01,
-    content => template("pam/header.erb"),
-  }
+  realize ( Concat[$limits_conf] )
+  Concat::Fragment <| title == 'header' |> { target => $limits_conf }
 
   concat::fragment { "pam::limits ${domain}-${type}-${item}-${value}":
     ensure  => $ensure,
