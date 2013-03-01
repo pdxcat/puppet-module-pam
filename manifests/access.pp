@@ -17,7 +17,7 @@ define pam::access (
 
   realize Concat['/etc/security/access.conf']
 
-  concat::fragment { "pam::access $entity":
+  concat::fragment { "pam::access ${entity}:${origin}":
     ensure  => $ensure,
     target  => '/etc/security/access.conf',
     content => "${permission}:${entity}:${origin}\n",
